@@ -1,0 +1,28 @@
+- hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - install-k8s
+
+  tasks:
+    - name: Wait kubernetes_join_command to be available
+      local_action: wait_for path=/tmp/kubernetes_join_command
+
+    - name: Copy join command from Ansiblehost to the worker nodes.
+      become: true
+      copy:
+        src: /tmp/kubernetes_join_command
+        dest: /tmp/kubernetes_join_command
+        mode: 0777
+
+    - name: delete kubernetes_join_command
+      become: true
+      local_action:
+        module: file
+        state: absent
+        path: /tmp/kubernetes_join_command
+
+    - name: Join the Worker nodes to the cluster.
+      become: true
+      command: sh /tmp/kubernetes_join_command
+      register: joined_or_not
