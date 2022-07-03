@@ -5,4 +5,9 @@ ssh_keys = [{
 }]
 
 gcp_creds_file_path = "~/gcp-credentials-key.json"
-project = "my-project"
+
+project = "my-project-id"
+region = "europe-west1"
+zone = "europe-west1-b"
+
+worker_nodes_count = 2

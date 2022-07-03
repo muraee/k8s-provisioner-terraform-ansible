@@ -1,8 +1,8 @@
 variable "ssh_keys" {
   type = list(object({
     privatekeyPath = string
-    publickey = string
-    user      = string
+    publickey      = string
+    user           = string
   }))
 }
 
@@ -22,8 +22,7 @@ variable "zone" {
   default = "europe-west1-b"
 }
 
-
 variable "worker_nodes_count" {
-  type =  number
+  type    = number
   default = 2
 }
