@@ -45,6 +45,11 @@ See [`terraform.tfvars.example`](./terraform.tfvars.example) for a full example.
 ## Provisioning the cluster
 
 ```bash
+terrafrom init
+```
+To download the required plugins.
+
+```bash
 terrafrom plan
 ```
 To preview all the changes that Terrafrom will be performing.
