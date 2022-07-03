@@ -1,8 +1,8 @@
 - hosts: all
-  become: yes
-  become_user: root
   roles:
-    - install-k8s
+    - role: install-k8s
+      become: yes
+      become_user: root
 
   tasks:
     - name: initialize the cluster
@@ -10,10 +10,10 @@
       args:
         chdir: $HOME
         creates: cluster_initialized.yaml
+      become: yes
+      become_user: root
 
     - name: create .kube directory
-      become: yes
-      become_user: "{{ user }}"
       file:
         path: $HOME/.kube
         state: directory
@@ -22,13 +22,13 @@
     - name: copies admin.conf to user's config
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: /home/{{ user }}/.kube/config
+        dest: /home/{{ ansible_user }}/.kube/config
         remote_src: yes
-        owner: "{{ user }}"
+        owner: "{{ ansible_user }}"
+      become: yes
+      become_user: root
 
     - name: setup kubectl autocompletion
-      become: yes
-      become_user: "{{ user }}"
       shell: |
         echo 'source <(kubectl completion bash)' >>~/.bashrc
         echo 'alias k=kubectl' >>~/.bashrc
@@ -37,22 +37,16 @@
         chdir: $HOME
 
     - name: Untaint master node
-      become: yes
-      become_user: "{{ user }}"
       shell: kubectl taint nodes $(hostname) node-role.kubernetes.io/control-plane- node-role.kubernetes.io/master-
       args:
         chdir: $HOME
 
     - name: install Pod network
-      become: yes
-      become_user: "{{ user }}"
       shell: kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
       args:
         chdir: $HOME
 
     - name: Get the token for joining the worker nodes
-      become: yes
-      become_user: "{{ user }}"
       shell: kubeadm token create  --print-join-command
       register: kubernetes_join_command
 

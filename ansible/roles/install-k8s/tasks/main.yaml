@@ -1,12 +1,4 @@
 ---
-# - hosts: "masters, workers"
-#   remote_user: ubuntu
-#   become: yes
-#   become_method: sudo
-#   become_user: root
-#   gather_facts: yes
-#   connection: ssh
-
 - name: Create containerd config file
   file:
     path: "/etc/modules-load.d/containerd.conf"
