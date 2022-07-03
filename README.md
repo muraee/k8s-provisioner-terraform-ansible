@@ -24,7 +24,7 @@ There are some required variables that Terrafrom needs:
 
 Simply create a variables file named `terraform.tfvars`, which will be autmoatically imported by Terrafrom:
 
-```json
+```tf
 ssh_keys = [{
   privatekeyPath = "~/.ssh/id_ed25519"     // used by Ansible
   publickey      = "ssh-ed25519 AAAAC3N...."
